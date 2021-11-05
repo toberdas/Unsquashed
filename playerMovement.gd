@@ -30,7 +30,6 @@ func update_rotation(delta):
 	roty += ((dir.x * rotation_speed * delta) - roty) /2
 #	transform.basis = Basis() # reset rotation
 	rotate_object_local(Vector3(0, 1, 0), roty)
-	print(roty)
 	pass
 
 func add_velocity(delta):
