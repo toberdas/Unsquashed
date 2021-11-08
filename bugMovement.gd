@@ -17,6 +17,7 @@ var impulse = 100
 var drag = 80
 var rotation_speed = 6
 var hp = 3;
+var maxSpeed = 20
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,8 +43,8 @@ func _process(delta):
 	
 func get_input():
 	if aitimer.is_stopped():
-		dir.x = rand_range(-1,1)
-		dir.y = rand_range(-1,0)
+		dir.x = rand_range(-.2,.2)
+		dir.y = rand_range(-1,-.5)
 		aitimer.start(2)
 
 func update_rotation(delta):
@@ -55,6 +56,8 @@ func update_rotation(delta):
 func add_velocity(delta):
 	velocity += transform.basis.z * impulse * dir.y * delta
 	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
+	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
+	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
 	pass
 	
 func update_position(delta):
@@ -65,15 +68,16 @@ func update_position(delta):
 func shockwaved(bug, intensity):
 	var index = get_index()
 	if bug == index:
-		print("shockwaved")
 		if timer.is_stopped():
+			print("shockwaved")
 			_state = state.shockwaved
 		timer.start(1)
 
 func splatted(bug):
 	var index = get_index()
 	if bug == index:
-		print("splatted")
-		hp -= 1
-		if hp == 0:
-			add_to_group("Dead")
+		if timer.is_stopped():
+			print("splatted")
+			hp -= 1
+			if hp == 0:
+				add_to_group("Dead")

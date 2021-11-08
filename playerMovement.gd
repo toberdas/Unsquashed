@@ -15,6 +15,7 @@ var _state : int = state.normal
 var impulse = 100
 var drag = 80
 var rotation_speed = 6
+var maxSpeed = 30
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,6 +53,9 @@ func update_rotation(delta):
 func add_velocity(delta):
 	velocity += transform.basis.z * impulse * dir.y * delta
 	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
+	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
+	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
+	print(velocity)
 	pass
 	
 func update_position(delta):

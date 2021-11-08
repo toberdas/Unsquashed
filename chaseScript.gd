@@ -91,7 +91,7 @@ func move_to_target(delta):
 	
 	if stomping:
 		var _heightdiffnorm = transform.origin.y / height
-		stompMultiplier = round(3 * (1 + curve.interpolate(1 - _heightdiffnorm)))
+		stompMultiplier = round(5 * (1 + curve.interpolate(1 - _heightdiffnorm)))
 	else:
 		stompMultiplier = 1
 	if _distance.length() > 0.1:
