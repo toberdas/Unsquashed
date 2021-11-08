@@ -16,6 +16,7 @@ var impulse = 100
 var drag = 80
 var rotation_speed = 6
 var maxSpeed = 30
+var hp = 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -55,7 +56,6 @@ func add_velocity(delta):
 	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
 	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
 	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
-	print(velocity)
 	pass
 	
 func update_position(delta):
@@ -63,11 +63,20 @@ func update_position(delta):
 	transform = transform.orthonormalized()
 	pass
 	
-func shockwaved(bug, intensity):
+func shockwaved(bug):
 	var index = get_index()
 	if bug == index:
 		print("shockwaved")
 		if timer.is_stopped():
 			_state = state.shockwaved
 		timer.start(1)
+		
+func splatted(bug):
+	var index = get_index()
+	if bug == index:
+		if timer.is_stopped():
+			print("splatted")
+			hp -= 1
+			if hp == 0:
+				add_to_group("Dead")
 

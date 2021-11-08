@@ -4,8 +4,6 @@ onready var area = $Area
 onready var area2 = $Area2
 onready var area3 = $Area3
 onready var patroltimer = $Timer
-signal bugShockwaved
-signal bugSplatted
 var speed = 600
 var stompDistance = 3
 
@@ -74,16 +72,12 @@ func bug_detected(bug):
 	pass
 
 func bug_shockwaved(bug):
-	if bug.is_in_group("Bugs"):
-		var intensity = Vector2(transform.origin.x,transform.origin.z).distance_to(Vector2(moveTarget.x,moveTarget.z))
-		emit_signal("bugShockwaved",bug.get_index(),intensity)
-	pass
+	get_tree().call_group("Bugs", "shockwaved", bug.get_index())
+
 	
 func bug_splatted(bug):
-	print("splat emmited")
-	if bug.is_in_group("Bugs"):
-		emit_signal("bugSplatted",bug.get_index())
-	pass
+	get_tree().call_group("Bugs", "splatted", bug.get_index())
+
 
 func move_to_target(delta):
 	var _distance = moveTarget - transform.origin

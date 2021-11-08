@@ -65,7 +65,7 @@ func update_position(delta):
 	transform = transform.orthonormalized()
 	pass
 	
-func shockwaved(bug, intensity):
+func shockwaved(bug):
 	var index = get_index()
 	if bug == index:
 		if timer.is_stopped():
