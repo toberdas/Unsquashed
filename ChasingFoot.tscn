@@ -22,3 +22,8 @@ autostart = true
 [node name="CSGBox" type="CSGBox" parent="."]
 width = 4.64525
 depth = 13.0936
+
+[node name="Area2" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area2"]
+shape = SubResource( 1 )

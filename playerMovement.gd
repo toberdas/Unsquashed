@@ -3,6 +3,7 @@ extends KinematicBody
 var dir := Vector2.ZERO
 var velocity := Vector3.ZERO
 var roty = 0
+onready var foots = get_tree().get_root().find_node("ChasingFoot",true,false) 
 
 var impulse = 100
 var drag = 80
@@ -10,6 +11,7 @@ var rotation_speed = 6
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	foots.connect("bugShockwaved", self, "shockwaved")
 	pass # Replace with function body.
 
 
@@ -40,4 +42,8 @@ func add_velocity(delta):
 func update_position(delta):
 	move_and_slide(velocity)
 	transform = transform.orthonormalized()
+	pass
+	
+func shockwaved(intensity):
+	
 	pass
