@@ -5,6 +5,7 @@ var velocity := Vector3.ZERO
 var roty = 0
 
 onready var timer = $Timer
+onready var aitimer = $AITimer
 
 onready var foots = get_tree().get_root().find_node("Foot",true,false) 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
@@ -15,22 +16,23 @@ var _state : int = state.normal
 var impulse = 100
 var drag = 80
 var rotation_speed = 6
+var hp = 3;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print(foots)
 	foots.connect("bugShockwaved", self, "shockwaved")
+	foots.connect("bugSplatted", self, "splatted")
 	pass # Replace with function body.
 
 
 func _process(delta):
 	if _state == state.normal:
-		get_player_input()
+		get_input()
 		add_velocity(delta)
 		update_rotation(delta)
 		update_position(delta)
 	if _state == state.shockwaved:
-		get_player_input()
 		update_rotation(delta)
 		update_position(delta)
 		transform.origin.y = shockwaveCurve.interpolate(1 - timer.time_left) * 2
@@ -38,10 +40,11 @@ func _process(delta):
 			_state = state.normal
 	pass
 	
-func get_player_input():
-	dir.x = int(Input.is_action_pressed("key_left")) - int(Input.is_action_pressed("key_right"))
-	dir.y = -int(Input.is_action_pressed("key_up"))
-	pass
+func get_input():
+	if aitimer.is_stopped():
+		dir.x = rand_range(-1,1)
+		dir.y = rand_range(-1,0)
+		aitimer.start(2)
 
 func update_rotation(delta):
 	roty += ((dir.x * rotation_speed * delta) - roty) /2
@@ -67,3 +70,10 @@ func shockwaved(bug, intensity):
 			_state = state.shockwaved
 		timer.start(1)
 
+func splatted(bug):
+	var index = get_index()
+	if bug == index:
+		print("splatted")
+		hp -= 1
+		if hp == 0:
+			add_to_group("Dead")

@@ -2,11 +2,12 @@ extends KinematicBody
 var curve = preload("res://stomp_curve.tres")
 onready var area = $Area
 onready var area2 = $Area2
+onready var area3 = $Area3
+onready var patroltimer = $Timer
 signal bugShockwaved
-
-var speed = 500
-var stompSpeed = 700
-var stompDistance = 10
+signal bugSplatted
+var speed = 600
+var stompDistance = 3
 
 enum state {idle, chasing, waiting, stomping}
 var _state : int = state.idle
@@ -21,46 +22,43 @@ var chasingBug = null
 
 func _ready():
 	height = transform.origin.y
-	update_timer()
 	area.connect("body_entered", self, "bug_detected")
 	area2.connect("body_entered", self, "bug_shockwaved")
+	area3.connect("body_entered", self, "bug_splatted")
 	pass
 
-func _physics_process(delta):
+func _process(delta):
 	move_to_target(delta)
-
-func update_timer():
-	yield(get_tree().create_timer(1.0), "timeout")
 	if _state == state.idle:
 		patrol()
 	if _state == state.chasing:
 		raycasting()
-		
 	if _state == state.stomping:
 		stomp()
-	update_timer()
-	pass
 
 func stomp():
-	if abs(transform.origin.y) <= 1:
+	if abs(transform.origin.y) <= 2:
+		transform.origin.y = 0
 		moveTarget.y = height
 		stomping = false
-		_state = state.idle
-	if abs(transform.origin.y - height) < .5:
+		_state = state.chasing
+	if abs(transform.origin.y - height) < 1:
+		print("Stomp!")
 		moveTarget.y = 0
 		stomping = true
 	pass
 
 func patrol():
-	moveTarget.x = randf()
-	moveTarget.z = randf()
+	if patroltimer.is_stopped():
+		moveTarget.x = randi() % 20   
+		moveTarget.z = randi() % 20   
+		patroltimer.start(2)
 
 func raycasting():
-	var _direction = moveTarget - transform.origin
 	var _direct_state = get_world().direct_space_state
 	var raycol = _direct_state.intersect_ray(transform.origin, chasingBug.transform.origin)
 	if raycol:
-		if raycol.collider.is_in_group("Bugs"):
+		if raycol.collider.is_in_group("Bugs") && !raycol.collider.is_in_group("Dead"):
 			moveTarget.x = chasingBug.transform.origin.x
 			moveTarget.z = chasingBug.transform.origin.z
 			if Vector2(transform.origin.x,transform.origin.z).distance_to(Vector2(moveTarget.x,moveTarget.z)) < stompDistance:
@@ -69,26 +67,32 @@ func raycasting():
 			_state = state.idle
 
 func bug_detected(bug):
-	print("bug detected")
-	if bug.is_in_group("Bugs"):
+	if bug.is_in_group("Bugs") && !bug.is_in_group("Dead"):
+		print("bug detected")
 		chasingBug = bug
 		_state = state.chasing
 	pass
 
 func bug_shockwaved(bug):
-	var intensity = Vector2(transform.origin.x,transform.origin.z).distance_to(Vector2(moveTarget.x,moveTarget.z))
-	emit_signal("bugShockwaved",intensity)
+	if bug.is_in_group("Bugs"):
+		var intensity = Vector2(transform.origin.x,transform.origin.z).distance_to(Vector2(moveTarget.x,moveTarget.z))
+		emit_signal("bugShockwaved",bug.get_index(),intensity)
+	pass
+	
+func bug_splatted(bug):
+	print("splat emmited")
+	if bug.is_in_group("Bugs"):
+		emit_signal("bugSplatted",bug.get_index())
 	pass
 
 func move_to_target(delta):
-	var _direction = (moveTarget - transform.origin).normalized()
-	var _stompdirection = Vector3(0,_direction.y,0)
-	var _movedirection = Vector3(_direction.x, 0, _direction.z)
+	var _distance = moveTarget - transform.origin
+	var _direction = _distance.normalized()
+	
 	if stomping:
 		var _heightdiffnorm = transform.origin.y / height
-		stompMultiplier = 3 * (1 + curve.interpolate(1 - _heightdiffnorm))
+		stompMultiplier = round(3 * (1 + curve.interpolate(1 - _heightdiffnorm)))
 	else:
 		stompMultiplier = 1
-	move_and_slide(_movedirection.normalized() * speed * delta)
-	move_and_slide(_stompdirection.normalized() * speed * stompMultiplier * delta)
-	pass
+	if _distance.length() > 0.1:
+		move_and_slide(_direction * (speed * stompMultiplier) * delta, Vector3.UP)
