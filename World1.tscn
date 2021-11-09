@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://ChasingFoot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://chasers/hand.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Bug.tscn" type="PackedScene" id=4]
@@ -47,12 +47,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.131786, -0.140578, 26.2248 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.905739, 0.423836, 0, -0.423836, 0.905739, 0, 18.3413, 30.9258 )
 
-[node name="Foot" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86218, 15.9222, -32.2795 )
-
-[node name="Foot2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8209, 15.9222, -18.3629 )
-
 [node name="KinematicBody" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3855, -0.645145, 19.9582 )
 
@@ -64,3 +58,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.36416, -0.645145, 8.82688 )
 
 [node name="KinematicBody4" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6358, -0.645145, -23.1731 )
+
+[node name="hand" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.2807, -16.8042 )

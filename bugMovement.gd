@@ -7,7 +7,6 @@ var roty = 0
 onready var timer = $Timer
 onready var aitimer = $AITimer
 
-onready var foots = get_tree().get_root().find_node("Foot",true,false) 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
 enum state {normal, shockwaved}
@@ -21,9 +20,6 @@ var maxSpeed = 20
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(foots)
-	foots.connect("bugShockwaved", self, "shockwaved")
-	foots.connect("bugSplatted", self, "splatted")
 	pass # Replace with function body.
 
 
