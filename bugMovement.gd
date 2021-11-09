@@ -6,6 +6,7 @@ var roty = 0
 
 onready var timer = $Timer
 onready var aitimer = $AITimer
+onready var animplayer = $AnimationPlayer
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
@@ -29,6 +30,10 @@ func _process(delta):
 		add_velocity(delta)
 		update_rotation(delta)
 		update_position(delta)
+		if dir.length() > 0.1:
+			animplayer.play("Walk")
+		else:
+			animplayer.stop("Walk")
 	if _state == state.shockwaved:
 		update_rotation(delta)
 		update_position(delta)
