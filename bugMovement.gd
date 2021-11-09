@@ -61,13 +61,7 @@ func update_position(delta):
 	transform = transform.orthonormalized()
 	pass
 	
-func shockwaved(bug):
-	var index = get_index()
-	if bug == index:
-		if timer.is_stopped():
-			print("shockwaved")
-			_state = state.shockwaved
-		timer.start(1)
+
 
 func splatted(bug):
 	var index = get_index()
@@ -77,3 +71,13 @@ func splatted(bug):
 			hp -= 1
 			if hp == 0:
 				add_to_group("Dead")
+		timer.start(1)
+
+func shockwaved(bug):
+	var index = get_index()
+	if bug == index:
+		if timer.is_stopped():
+			print("shockwaved")
+			_state = state.shockwaved
+		timer.start(1)
+

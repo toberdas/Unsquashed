@@ -31,25 +31,12 @@ func _process(delta):
 	move_to_target(delta)
 	if _state == state.idle:
 		patrol()
-		animplayer.queue("Idle")
+		animplayer.play("Idle")
 	if _state == state.chasing:
 		raycasting()
-		animplayer.queue("Chase")
+		animplayer.play("Chase")
 	if _state == state.stomping:
-		stomp()
-		animplayer.queue("Splat")
-
-func stomp():
-	if abs(transform.origin.y) <= 2:
-		transform.origin.y = 0
-		moveTarget.y = height
-		stomping = false
-		_state = state.chasing
-	if abs(transform.origin.y - height) < 1:
-		print("Stomp!")
-		moveTarget.y = 0
-		stomping = true
-	pass
+		animplayer.play("Splat")
 
 func patrol():
 	if patroltimer.is_stopped():
@@ -76,13 +63,21 @@ func bug_detected(bug):
 		_state = state.chasing
 	pass
 
+
+
 func bug_shockwaved(bug):
 	get_tree().call_group("Bugs", "shockwaved", bug.get_index())
 
-	
-func bug_splatted(bug):
-	get_tree().call_group("Bugs", "splatted", bug.get_index())
+func hand_up():
+	transform.origin.y = 0
+	moveTarget.y = height
+	stomping = false
+	_state = state.idle
 
+func hand_down():
+	print("Stomp!")
+	moveTarget.y = 0
+	stomping = true
 
 func move_to_target(delta):
 	var _distance = moveTarget - transform.origin
