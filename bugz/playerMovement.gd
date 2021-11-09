@@ -5,10 +5,13 @@ var velocity := Vector3.ZERO
 var roty = 0
 
 onready var timer = $Timer
+onready var switchtimer = $SwitchTimer
+onready var overviewcam = $OverviewCamera
+onready var cam = $SpringArm/Camera
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
-enum state {normal, shockwaved}
+enum state {normal, shockwaved, overview}
 var _state : int = state.normal
 
 var impulse = 100
@@ -16,6 +19,7 @@ var drag = 80
 var rotation_speed = 6
 var maxSpeed = 30
 var hp = 3
+var switchdelay = 1;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,23 +28,65 @@ func _ready():
 
 func _process(delta):
 	if _state == state.normal:
-		get_player_input()
+		get_movement_input()
+		get_control_input()
 		add_velocity(delta)
 		update_rotation(delta)
 		update_position(delta)
 	if _state == state.shockwaved:
-		get_player_input()
+		get_movement_input()
 		update_rotation(delta)
 		update_position(delta)
 		transform.origin.y = shockwaveCurve.interpolate(1 - timer.time_left) * 2
 		if timer.is_stopped():
 			_state = state.normal
+	if _state == state.overview:
+		get_control_input()
+		overview_input()
 	pass
-	
-func get_player_input():
+
+func overview_input():
+	if Input.is_action_just_pressed("select_unit"):
+		select_units()
+		
+func select_units():
+	var ray_result = raycast_from_mouse()
+	if ray_result:
+		if ray_result.collider.is_in_group("Bugs") && !ray_result.collider.is_in_group("Dead"):
+			get_tree().call_group("Bugs", "selected", ray_result.collider.get_index())
+	pass
+
+func raycast_from_mouse():
+	var mousepos = get_viewport().get_mouse_position()
+	var from = cam.project_ray_origin(mousepos)
+	var to = from + cam.project_ray_normal(mousepos) * 1000
+	var _direct_state = get_world().direct_space_state
+	var raycol = _direct_state.intersect_ray(from, to)
+	return raycol
+
+func get_control_input():
+	if Input.is_action_just_pressed("overview"):
+		print("overview pressed")
+		switch_overview()
+
+func get_movement_input():
 	dir.x = int(Input.is_action_pressed("key_left")) - int(Input.is_action_pressed("key_right"))
 	dir.y = -int(Input.is_action_pressed("key_up"))
-	pass
+
+
+func switch_overview():
+	if switchtimer.is_stopped():	
+		if _state == state.overview:
+			_state = state.normal
+			cam.make_current()
+			switchtimer.start(switchdelay)
+			return
+		if _state == state.normal:
+			_state = state.overview
+			overviewcam.make_current()
+			switchtimer.start(switchdelay)
+			return
+
 
 func update_rotation(delta):
 	roty += ((dir.x * rotation_speed * delta) - roty) /2

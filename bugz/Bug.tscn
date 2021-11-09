@@ -4,7 +4,8 @@
 [ext_resource path="res://bugMovement.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 1.60368
+radius = 0.751895
+height = 0.306647
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Plane"
@@ -308,6 +309,17 @@ tracks/27/loop_wrap = true
 tracks/27/imported = true
 tracks/27/enabled = true
 tracks/27/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.0666667, 1, 0, 0, 0, -0.00389311, -5.4453e-05, -0.000541959, 0.999992, 1, 1, 1, 0.133333, 1, 0, 0, 0, -0.0297055, -0.000345059, -0.00425199, 0.99955, 1, 1, 1, 0.2, 1, 0, 0, 0, -0.0777816, -0.000651939, -0.0115528, 0.996903, 1, 1, 1, 0.4, 1, 0, 0, 0, -0.244999, 0.002447, -0.0438709, 0.968527, 1, 1, 1, 0.466667, 1, 0, 0, 0, -0.273886, 0.00607714, -0.0545989, 0.960192, 1, 1, 1, 0.533333, 1, 0, 0, 0, -0.275211, 0.0116151, -0.0639164, 0.959186, 1, 1, 1, 0.6, 1, 0, 0, 0, -0.253448, 0.0187802, -0.0716698, 0.964508, 1, 1, 1, 0.666667, 1, 0, 0, 0, -0.21526, 0.027012, -0.0780673, 0.973057, 1, 1, 1, 0.866667, 1, 0, 0, 0, -0.0438546, 0.0529069, -0.0885499, 0.993698, 1, 1, 1, 1, 1, 0, 0, 0, 0.0578554, 0.0652006, -0.0897723, 0.99214, 1, 1, 1, 1.06667, 1, 0, 0, 0, 0.0865689, 0.0683629, -0.0896187, 0.989849, 1, 1, 1, 1.125, 1, 0, 0, 0, 0.0966082, 0.0694344, -0.0895098, 0.988855, 1, 1, 1 )
+tracks/28/type = "method"
+tracks/28/path = NodePath(".")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "Walk"
@@ -509,11 +521,13 @@ tracks/27/imported = true
 tracks/27/enabled = true
 tracks/27/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.0666667, 1, 0, 0, 0, 0, 0, 6.44475e-05, 1, 1, 1, 1, 0.133333, 1, 0, 0, 0, 0, 0, 0.000527028, 1, 1, 1, 1, 0.2, 1, 0, 0, 0, 0, 0, 0.00150617, 0.999999, 1, 1, 1, 0.266667, 1, 0, 0, 0, 0, 0, 0.00296288, 0.999996, 1, 1, 1, 0.333333, 1, 0, 0, 0, 0, 0, 0.00482883, 0.999988, 1, 1, 1, 2.06667, 1, 0, 0, 0, 0, 0, 0.087113, 0.996198, 1, 1, 1, 2.13333, 1, 0, 0, 0, 0, 0, 0.0869924, 0.996209, 1, 1, 1, 2.2, 1, 0, 0, 0, 0, 0, 0.0863544, 0.996265, 1, 1, 1, 2.26667, 1, 0, 0, 0, 0, 0, 0.0852361, 0.996361, 1, 1, 1, 2.33333, 1, 0, 0, 0, 0, 0, 0.083704, 0.996491, 1, 1, 1, 2.53333, 1, 0, 0, 0, 0, 0, 0.0767346, 0.997052, 1, 1, 1, 4.16667, 1, 0, 0, 0, 0, 0, -3.72529e-09, 1, 1, 1, 1 )
 
-[node name="insect" type="KinematicBody"]
+[node name="insect" type="KinematicBody" groups=[
+"Bugs",
+]]
 script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.862781, 0 )
+transform = Transform( 0.974557, 0, 0, 0, 0.974557, 0, 0, 0, 0.974557, 0, 0.567193, -0.0560549 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
@@ -525,7 +539,7 @@ one_shot = true
 autostart = true
 
 [node name="Armature" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.188263, 2.16902 )
+transform = Transform( 0.319424, 0, 0, 0, -2.11728e-08, 0.484378, 0, -0.294811, -1.28866e-08, 0.0110755, 0.195461, 0.492593 )
 
 [node name="Skeleton" type="Skeleton" parent="Armature"]
 bones/0/name = "abdomen"

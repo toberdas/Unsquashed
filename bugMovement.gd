@@ -3,6 +3,7 @@ extends KinematicBody
 var dir := Vector2.ZERO
 var velocity := Vector3.ZERO
 var roty = 0
+var selected = false
 
 onready var timer = $Timer
 onready var aitimer = $AITimer
@@ -10,13 +11,13 @@ onready var animplayer = $AnimationPlayer
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
-enum state {normal, shockwaved}
-var _state : int = state.normal
+enum state {wandering, shockwaved, dead}
+var _state : int = state.wandering
 
 var impulse = 100
 var drag = 80
 var rotation_speed = 6
-var hp = 3;
+var hp = 1;
 var maxSpeed = 20
 
 # Called when the node enters the scene tree for the first time.
@@ -25,7 +26,7 @@ func _ready():
 
 
 func _process(delta):
-	if _state == state.normal:
+	if _state == state.wandering:
 		get_input()
 		add_velocity(delta)
 		update_rotation(delta)
@@ -39,8 +40,9 @@ func _process(delta):
 		update_position(delta)
 		transform.origin.y = shockwaveCurve.interpolate(1 - timer.time_left) * 2
 		if timer.is_stopped():
-			_state = state.normal
-	pass
+			_state = state.wandering
+	if _state == state.dead:
+		pass
 	
 func get_input():
 	if aitimer.is_stopped():
@@ -67,7 +69,6 @@ func update_position(delta):
 	pass
 	
 
-
 func splatted(bug):
 	var index = get_index()
 	if bug == index:
@@ -75,7 +76,7 @@ func splatted(bug):
 			print("splatted")
 			hp -= 1
 			if hp == 0:
-				add_to_group("Dead")
+				bug_death()
 		timer.start(1)
 
 func shockwaved(bug):
@@ -83,6 +84,18 @@ func shockwaved(bug):
 	if bug == index:
 		if timer.is_stopped():
 			print("shockwaved")
-			_state = state.shockwaved
-		timer.start(1)
+			if _state != state.dead:
+				_state = state.shockwaved
+				animplayer.play("Hit")
+			timer.start(1)
 
+func bug_death():
+	add_to_group("Dead")
+	_state = state.dead
+	velocity = Vector3.ZERO
+	animplayer.seek(animplayer.get_current_animation_length(), true)
+
+func selected(bug):
+	print("selected")
+	selected = true
+	pass
