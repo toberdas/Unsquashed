@@ -4,8 +4,8 @@
 [ext_resource path="res://bugz/bugMovement.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.751895
-height = 0.306647
+radius = 0.401157
+height = 1.84354
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Plane"
@@ -532,7 +532,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0348972, 0 )
 script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.974557, 0, 0, 0, 0.974557, 0, 0, 0, 0.974557, 0, 0.567193, -0.0560549 )
+transform = Transform( 0.974557, 0, 0, 0, 0.974557, 0, 0, 0, 0.974557, 0, 0.567193, -0.0210293 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

@@ -9,6 +9,7 @@ onready var timer = $Timer
 onready var aitimer = $AITimer
 onready var animplayer = $AnimationPlayer
 
+
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
 enum state {wandering, shockwaved, splatted, dead}
@@ -71,6 +72,9 @@ func update_position(delta):
 	transform = transform.orthonormalized()
 	pass
 	
+func raycast_from_head():
+	
+	pass
 
 func splatted(bug):
 	var index = get_index()

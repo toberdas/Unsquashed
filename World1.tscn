@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://chasers/hand.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://bugz/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://bugz/Bug.tscn" type="PackedScene" id=4]
-
-[sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="Curve3D" id=2]
 bake_interval = 10.0
@@ -19,27 +17,35 @@ _data = {
 [node name="StaticBody" parent="." instance=ExtResource( 2 )]
 transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, 13.5739, 6.59321, -2.432 )
 
+[node name="StaticBody2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 89.3597, 0, 0, 0, 1, 0, 0, 0, 77.3869, 0, -0.883174, 0 )
+
+[node name="StaticBody3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, -32.0002, 13.4435, -16.6956 )
+
+[node name="StaticBody4" parent="." instance=ExtResource( 2 )]
+transform = Transform( 9.99994, 0.0167773, 0.00812803, -0.0329518, 5.09052, -0.00736393, -0.00815221, 0.00373502, 9.99999, 46.7348, 1.04533, -16.6956 )
+
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.905739, 0.423836, 0, -0.423836, 0.905739, 0, 18.3413, 30.9258 )
 
 [node name="hand2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.615524, 0, 0.788118, 0, 1, 0, -0.788118, 0, 0.615524, 0, 28.4901, 8.5535 )
+transform = Transform( 0.615524, 0, 0.788118, 0, 1, 0, -0.788118, 0, 0.615524, 0, 28.1541, 8.5535 )
 
 [node name="insect" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56856, 0.10881, -12.9109 )
 
 [node name="insect2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56856, 0.10881, -4.75968 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.749241, 0.0127483, -3.21614 )
+
+[node name="insect4" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.45241, 0.10881, -11.0859 )
+
+[node name="insect5" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56856, 0.10881, -24.2492 )
 
 [node name="insect3" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.60214, 0.10881, -4.75968 )
-
-[node name="StaticBody2" type="StaticBody" parent="."]
-
-[node name="MeshInstance" type="MeshInstance" parent="StaticBody2"]
-transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.966597, 0 )
-mesh = SubResource( 1 )
-material/0 = null
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 68.6697, 0 )
@@ -48,9 +54,6 @@ shadow_enabled = true
 [node name="Path" type="Path" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 0 )
 curve = SubResource( 2 )
-
-[node name="PathFollow" type="PathFollow" parent="Path"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.0675, -0.789185, -0.531204 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.131786, -0.140577, 26.2248 )

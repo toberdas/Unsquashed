@@ -6,18 +6,18 @@ var patrol_index = 0
 
 var curve = preload("res://stomp_curve.tres")
 
-onready var area = $Area
+onready var scanArea = $Area
 onready var shockwaveArea = $Area2
 onready var shockwaveCollider = $Area2/CollisionShape
 onready var area3 = $Area3
-onready var patroltimer = $Timer
+onready var waittimer = $Timer
 onready var animplayer = $AnimationPlayer
 
 var speed = 900
 var stompDistance = 3
 
 enum state {idle, patrol, chasing, waiting, stomping}
-var _state : int = state.idle
+var _state : int = state.patrol
 
 var velocity = Vector3.ZERO
 var moveTarget = transform.origin
@@ -31,7 +31,7 @@ func _ready():
 	if patrol_path:
 		patrol_points = get_node(patrol_path).curve.get_baked_points()
 	height = transform.origin.y
-	area.connect("body_entered", self, "bug_detected")
+	scanArea.connect("body_entered", self, "bug_detected")
 	shockwaveArea.connect("body_entered", self, "bug_shockwaved")
 	area3.connect("body_entered", self, "bug_splatted")
 	pass
@@ -39,10 +39,10 @@ func _ready():
 func _process(delta):
 	move_to_target(delta)
 	if _state == state.idle:
+		pass
+	if _state == state.patrol:
 		patrol()
 		animplayer.play("Idle")
-	if _state == state.patrol:
-		pass
 	if _state == state.chasing:
 		raycasting()
 		animplayer.play("Chase")
@@ -77,15 +77,16 @@ func raycasting():
 			if Vector2(transform.origin.x,transform.origin.z).distance_to(Vector2(moveTarget.x,moveTarget.z)) < stompDistance:
 					_state = state.stomping
 		else:
-			_state = state.chasing
+			_state = state.patrol
 
 func bug_detected(bug):
 	if bug.is_in_group("Bugs") && !bug.is_in_group("Dead"):
 		var raycastbug = raycast(transform.origin, bug.transform.origin)
-		if raycastbug.collider.is_in_group("Bugs") && !bug.is_in_group("Dead"):
-			print("bug detected")
-			chasingBug = bug
-			_state = state.chasing
+		if raycastbug:
+			if raycastbug.collider.is_in_group("Bugs") && !bug.is_in_group("Dead"):
+				print("bug detected")
+				chasingBug = bug
+				_state = state.chasing
 	pass
 
 func bug_splatted(bug):
@@ -99,7 +100,7 @@ func hand_up():
 	transform.origin.y = 0
 	moveTarget.y = height
 	stomping = false
-	_state = state.idle
+	_state = state.patrol
 
 func hand_down():
 	shockwaveCollider.set_disabled(false)
