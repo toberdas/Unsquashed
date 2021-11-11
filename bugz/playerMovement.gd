@@ -10,6 +10,7 @@ onready var overviewcam = $OverviewCamera
 onready var cam = $SpringArm/Camera
 onready var raycastup = $RayCastUp
 onready var raycastdown = $RayCastDown
+onready var raycastdownback = $RayCastDownback
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
@@ -53,27 +54,44 @@ func overview_input():
 		select_units()
 
 func raycast_from_head():
+	if velocity.length() > 1:
+		raycast_up()
+		raycast_down()
+	pass
+	
+func raycast_down():
+	var colliderdown = raycastdown.get_collider()
+	var colliderdownback = raycastdownback.get_collider()
+	if !colliderdown or !colliderdown.is_in_group("Walls"):
+		if colliderdownback:
+			if colliderdownback.is_in_group("Walls"):
+				global_transform = align_with_y(global_transform, raycastup.get_collision_normal())
+#				transform.origin = raycastdownback.get_collision_point()
+
+func raycast_up():
 	var colliderup = raycastup.get_collider()
 	if colliderup:
 		if colliderup.is_in_group("Walls"):
-			global_transform = look_at_with_y(global_transform, raycastup.get_collision_normal(), global_transform.basis.y)
-	var colliderdown = raycastdown.get_collider()
-	if colliderdown:
-		if colliderdown.is_in_group("Walls"):
-			global_transform = look_at_with_y(global_transform, raycastup.get_collision_normal(), global_transform.basis.y)
-	pass
+			global_transform = align_with_y(global_transform, raycastup.get_collision_normal())
+#			transform.origin = raycastup.get_collision_point()
 
 func look_at_with_y(trans,new_y,v_up):
-	#Y vector
-	trans.basis.y=new_y.normalized()
-	trans.basis.z=v_up*-1
-	trans.basis.x = trans.basis.z.cross(trans.basis.y).normalized();
-	#Recompute z = y cross X
-	trans.basis.z = trans.basis.y.cross(trans.basis.x).normalized();
-	trans.basis.x = trans.basis.x * -1   # <======= ADDED THIS LINE
-	trans.basis = trans.basis.orthonormalized() # make sure it is valid 
+#	trans.basis.y=new_y.normalized()
+#	trans.basis.z= v_up*-1
+#	trans.basis.x = trans.basis.z.cross(trans.basis.y).normalized();
+#	#Recompute z = y cross X
+#	trans.basis.z = trans.basis.y.cross(trans.basis.x).normalized();
+#	trans.basis.x = trans.basis.x * -1   # <======= ADDED THIS LINE
+#	trans.basis = trans.basis.orthonormalized() # make sure it is valid 
+	pass
 	return trans
-
+	
+func align_with_y(xform, new_y):
+	var result = Basis()
+	result.x = new_y.cross(xform.basis.z)
+	result.y = new_y
+	result.z = xform.basis.x.cross(new_y)
+	return result
 
 func select_units():
 	var ray_result = raycast_from_mouse()

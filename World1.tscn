@@ -5,7 +5,7 @@
 [ext_resource path="res://bugz/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://bugz/Bug.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Curve3D" id=2]
+[sub_resource type="Curve3D" id=1]
 bake_interval = 10.0
 _data = {
 "points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 17.0675, -0.789185, -0.531204, 0, 0, 0, 0, 0, 0, 16.9556, -0.731886, -22.1886, 0, 0, 0, 0, 0, 0, 35.368, -0.588537, -16.3567, 0, 0, 0, 0, 0, 0, 37.5937, -3.15392, 11.8444, 0, 0, 0, 0, 0, 0, 23.0461, -2.62827, 30.2782, 0, 0, 0, 0, 0, 0, -6.99857, -0.314793, 16.4777, 0, 0, 0, 0, 0, 0, 17.0675, -0.789185, -0.531204 ),
@@ -53,7 +53,7 @@ shadow_enabled = true
 
 [node name="Path" type="Path" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 0 )
-curve = SubResource( 2 )
+curve = SubResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.131786, -0.140577, 26.2248 )
