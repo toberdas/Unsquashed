@@ -11,6 +11,8 @@ onready var cam = $SpringArm/Camera
 onready var raycastup = $RayCastUp
 onready var raycastdown = $RayCastDown
 onready var raycastdownback = $RayCastDownback
+onready var raycastdownback2 = $RayCastDownback2
+onready var raycastforward = $RayCastForward
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
@@ -65,33 +67,15 @@ func raycast_down():
 	if !colliderdown or !colliderdown.is_in_group("Walls"):
 		if colliderdownback:
 			if colliderdownback.is_in_group("Walls"):
-				global_transform = align_with_y(global_transform, raycastup.get_collision_normal())
-#				transform.origin = raycastdownback.get_collision_point()
+				look_at_from_position(raycastdownback.get_collision_point(),raycastdownback2.get_collision_point(),raycastdownback.get_collision_normal().normalized())
+				velocity = Vector3.ZERO
 
 func raycast_up():
 	var colliderup = raycastup.get_collider()
 	if colliderup:
 		if colliderup.is_in_group("Walls"):
-			global_transform = align_with_y(global_transform, raycastup.get_collision_normal())
-#			transform.origin = raycastup.get_collision_point()
-
-func look_at_with_y(trans,new_y,v_up):
-#	trans.basis.y=new_y.normalized()
-#	trans.basis.z= v_up*-1
-#	trans.basis.x = trans.basis.z.cross(trans.basis.y).normalized();
-#	#Recompute z = y cross X
-#	trans.basis.z = trans.basis.y.cross(trans.basis.x).normalized();
-#	trans.basis.x = trans.basis.x * -1   # <======= ADDED THIS LINE
-#	trans.basis = trans.basis.orthonormalized() # make sure it is valid 
-	pass
-	return trans
-	
-func align_with_y(xform, new_y):
-	var result = Basis()
-	result.x = new_y.cross(xform.basis.z)
-	result.y = new_y
-	result.z = xform.basis.x.cross(new_y)
-	return result
+			look_at_from_position(raycastforward.get_collision_point(), raycastup.get_collision_point(),raycastup.get_collision_normal().normalized())
+			velocity = Vector3.ZERO
 
 func select_units():
 	var ray_result = raycast_from_mouse()
