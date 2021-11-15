@@ -19,7 +19,7 @@ var shockwaveCurve = preload("res://shockwave_curve.tres")
 enum state {normal, shockwaved, overview}
 var _state : int = state.normal
 
-var impulse = 100
+var speed = 400
 var drag = 80
 var rotation_speed = 6
 var maxSpeed = 30
@@ -65,17 +65,16 @@ func raycast_down():
 	var colliderdown = raycastdown.get_collider()
 	var colliderdownback = raycastdownback.get_collider()
 	if !colliderdown or !colliderdown.is_in_group("Walls"):
-		if colliderdownback:
-			if colliderdownback.is_in_group("Walls"):
-				look_at_from_position(raycastdownback.get_collision_point(),raycastdownback2.get_collision_point(),raycastdownback.get_collision_normal().normalized())
-				velocity = Vector3.ZERO
+		move_and_align(raycastdownback2, raycastdownback)
 
 func raycast_up():
-	var colliderup = raycastup.get_collider()
-	if colliderup:
-		if colliderup.is_in_group("Walls"):
-			look_at_from_position(raycastforward.get_collision_point(), raycastup.get_collision_point(),raycastup.get_collision_normal().normalized())
-			velocity = Vector3.ZERO
+	move_and_align(raycastup, raycastforward)
+
+func move_and_align(ray1,ray2):
+	var forwardcol = ray1.get_collider()
+	if forwardcol:
+		if forwardcol.is_in_group("Walls"):
+			look_at_from_position(ray2.get_collision_point(), ray1.get_collision_point(),ray1.get_collision_normal().normalized())
 
 func select_units():
 	var ray_result = raycast_from_mouse()
@@ -121,10 +120,10 @@ func update_rotation(delta):
 	pass
 
 func add_velocity(delta):
-	velocity += transform.basis.z * impulse * dir.y * delta
-	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
-	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
-	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
+	velocity = transform.basis.z * speed * dir.y * delta
+#	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
+#	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
+#	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
 	pass
 
 func update_position(delta):

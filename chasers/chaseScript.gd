@@ -13,7 +13,7 @@ onready var area3 = $Area3
 onready var waittimer = $Timer
 onready var animplayer = $AnimationPlayer
 
-var speed = 900
+var speed = 1200
 var stompDistance = 3
 
 enum state {idle, patrol, chasing, waiting, stomping}
@@ -30,7 +30,8 @@ var chasingBug = null
 func _ready():
 	if patrol_path:
 		patrol_points = get_node(patrol_path).curve.get_baked_points()
-	height = transform.origin.y
+	height = global_transform.origin.y
+	moveTarget.y = height
 	scanArea.connect("body_entered", self, "bug_detected")
 	shockwaveArea.connect("body_entered", self, "bug_shockwaved")
 	area3.connect("body_entered", self, "bug_splatted")
@@ -48,6 +49,8 @@ func _process(delta):
 		animplayer.play("Chase")
 	if _state == state.stomping:
 		animplayer.play("Splat")
+		check_stomp_hit()
+	
 
 func patrol():
 	if !patrol_path:
@@ -68,8 +71,7 @@ func raycast(from, to):
 	return raycol
 	
 func raycasting():
-	var _direct_state = get_world().direct_space_state
-	var raycol = _direct_state.intersect_ray(transform.origin, chasingBug.transform.origin)
+	var raycol = raycast(transform.origin, chasingBug.transform.origin)
 	if raycol:
 		if raycol.collider.is_in_group("Bugs") && !raycol.collider.is_in_group("Dead"):
 			moveTarget.x = chasingBug.transform.origin.x
@@ -96,8 +98,12 @@ func bug_shockwaved(bug):
 	shockwaveCollider.set_disabled(true)
 	get_tree().call_group("Bugs", "shockwaved", bug.get_index())
 
+func check_stomp_hit():
+	if stomping == true:
+		if abs(global_transform.origin.y - moveTarget.y) < 1:
+			hand_up()
+
 func hand_up():
-	transform.origin.y = 0
 	moveTarget.y = height
 	stomping = false
 	_state = state.patrol
@@ -105,17 +111,16 @@ func hand_up():
 func hand_down():
 	shockwaveCollider.set_disabled(false)
 	print("Stomp!")
-	moveTarget.y = 0
+	moveTarget.y = chasingBug.transform.origin.y
 	stomping = true
 
 func move_to_target(delta):
 	var _distance = moveTarget - transform.origin
 	var _direction = _distance.normalized()
-	
 	if stomping:
 		var _heightdiffnorm = transform.origin.y / height
 		stompMultiplier = round(5 * (1 + curve.interpolate(1 - _heightdiffnorm)))
 	else:
 		stompMultiplier = 1
-	if _distance.length() > 0.1:
+	if _distance.length() > 0.2:
 		move_and_slide(_direction * (speed * stompMultiplier) * delta, Vector3.UP)

@@ -24,16 +24,10 @@ transform = Transform( 18.0498, 0, 5.71154, 0, 1, 0, -4.13695, 0, 24.9199, 46.53
 transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, -32.0002, 13.4435, -16.6956 )
 
 [node name="StaticBody4" parent="." instance=ExtResource( 2 )]
-transform = Transform( 9.20188, 0.016903, 3.91463, -0.0329518, 5.09052, -0.00736393, -3.91463, -0.00311701, 9.20193, 46.7348, 1.04533, -16.6956 )
+transform = Transform( 9.20188, 0.016903, 3.91463, 1.16185, 4.84922, -2.81189, -3.73838, 1.5487, 8.76178, 46.7348, 1.04533, -16.6956 )
 
 [node name="StaticBody5" parent="." instance=ExtResource( 2 )]
 transform = Transform( 9.95795, 0.017047, 0.915462, -0.0329518, 5.09052, -0.00736393, -0.915482, 0.00219729, 9.958, 35.7101, 11.2729, -21.6209 )
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.905739, 0.423836, 0, -0.423836, 0.905739, 0, 18.3413, 30.9258 )
-
-[node name="hand2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.615524, 0, 0.788118, 0, 1, 0, -0.788118, 0, 0.615524, 0, 28.1541, 8.5535 )
 
 [node name="insect" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56856, 0.10881, -12.9109 )
@@ -55,12 +49,28 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 68.6
 shadow_enabled = true
 
 [node name="Path" type="Path" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 0 )
+transform = Transform( 1.74938, 0, 0, 0, 1.25418, 0, 0, 0, 1.94776, -16.5078, 32.1199, -9.56645 )
 curve = SubResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.3376, -0.140577, 4.77349 )
 
+[node name="SpringArm2" type="SpringArm" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2 )
+
+[node name="SpotLight" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.866025, -0.5, 0, 0.5, -0.866025, 29, 2, -29 )
+light_energy = 0.5
+light_indirect_energy = 8.0
+spot_range = 16.0
+
 [node name="hand" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.662293, 0, -0.749245, 0, 1, 0, 0.749245, 0, 0.662293, -42.8336, 28.4901, -16.8042 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.5638, 32.9349, -1.70407 )
 patrol_path = NodePath("../Path")
+
+[node name="InterpolatedCamera" type="InterpolatedCamera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8907, 1.83978, 9.0183 )
+current = true
+target = NodePath("../Player/SpringArm2")
+speed = 10.0
+enabled = true
