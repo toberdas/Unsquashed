@@ -3,28 +3,28 @@ extends KinematicBody
 var dir := Vector2.ZERO
 var velocity := Vector3.ZERO
 var roty = 0
+var inAir = 1;
 
 onready var timer = $Timer
 onready var switchtimer = $SwitchTimer
 onready var overviewcam = $OverviewCamera
 onready var cam = $SpringArm/Camera
-onready var raycastup = $RayCastUp
-onready var raycastdown = $RayCastDown
-onready var raycastdownback = $RayCastDownback
-onready var raycastdownback2 = $RayCastDownback2
-onready var raycastforward = $RayCastForward
+
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
-enum state {normal, shockwaved, overview}
+enum state {normal}
 var _state : int = state.normal
 
-var speed = 400
+var gravity = 700
+var speed = 0
+var verSpeed = 0
 var drag = 80
 var rotation_speed = 6
-var maxSpeed = 30
-var hp = 3
-var switchdelay = 1;
+var maxSpeed = 600
+var hp = 30
+var switchdelay = 1
+var acceleration = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,84 +34,14 @@ func _ready():
 func _process(delta):
 	if _state == state.normal:
 		get_movement_input()
-		get_control_input()
 		add_velocity(delta)
 		update_rotation(delta)
 		update_position(delta)
-		raycast_from_head()
-	if _state == state.shockwaved:
-		get_movement_input()
-		update_rotation(delta)
-		update_position(delta)
-		transform.origin.y = shockwaveCurve.interpolate(1 - timer.time_left) * 2
-		if timer.is_stopped():
-			_state = state.normal
-	if _state == state.overview:
-		get_control_input()
-		overview_input()
 	pass
-
-func overview_input():
-	if Input.is_action_just_pressed("select_unit"):
-		select_units()
-
-func raycast_from_head():
-	if velocity.length() > 1:
-		raycast_up()
-		raycast_down()
-	pass
-	
-func raycast_down():
-	var colliderdown = raycastdown.get_collider()
-	var colliderdownback = raycastdownback.get_collider()
-	if !colliderdown or !colliderdown.is_in_group("Walls"):
-		move_and_align(raycastdownback2, raycastdownback)
-
-func raycast_up():
-	move_and_align(raycastup, raycastforward)
-
-func move_and_align(ray1,ray2):
-	var forwardcol = ray1.get_collider()
-	if forwardcol:
-		if forwardcol.is_in_group("Walls"):
-			look_at_from_position(ray2.get_collision_point(), ray1.get_collision_point(),ray1.get_collision_normal().normalized())
-
-func select_units():
-	var ray_result = raycast_from_mouse()
-	if ray_result: 
-		if ray_result.collider.is_in_group("Bugs") && !ray_result.collider.is_in_group("Dead"):
-			get_tree().call_group("Bugs", "selected", ray_result.collider.get_index())
-	pass
-
-func raycast_from_mouse():
-	var mousepos = get_viewport().get_mouse_position()
-	var from = cam.project_ray_origin(mousepos)
-	var to = from + cam.project_ray_normal(mousepos) * 1000
-	var _direct_state = get_world().direct_space_state
-	var raycol = _direct_state.intersect_ray(from, to)
-	return raycol
-
-func get_control_input():
-	if Input.is_action_just_pressed("overview"):
-		print("overview pressed")
-		switch_overview()
 
 func get_movement_input():
 	dir.x = int(Input.is_action_pressed("key_left")) - int(Input.is_action_pressed("key_right"))
 	dir.y = -int(Input.is_action_pressed("key_up"))
-
-func switch_overview():
-	if switchtimer.is_stopped():	
-		if _state == state.overview:
-			_state = state.normal
-			cam.make_current()
-			switchtimer.start(switchdelay)
-			return
-		if _state == state.normal:
-			_state = state.overview
-			overviewcam.make_current()
-			switchtimer.start(switchdelay)
-			return
 
 func update_rotation(delta):
 	roty += ((dir.x * rotation_speed * delta) - roty) /2
@@ -120,10 +50,13 @@ func update_rotation(delta):
 	pass
 
 func add_velocity(delta):
-	velocity = transform.basis.z * speed * dir.y * delta
-#	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
-#	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
-#	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
+	if dir.y < 0:
+		speed = lerp(speed, maxSpeed * -dir.y, acceleration * delta)
+	else:
+		speed = lerp(speed, 0, 1)
+	
+	velocity = (transform.basis.z * speed * dir.y * delta) + (-transform.basis.y * gravity * delta)
+
 	pass
 
 func update_position(delta):
@@ -132,16 +65,12 @@ func update_position(delta):
 	pass
 
 func shockwaved(bug):
-	var index = get_index()
-	if bug == index:
+	if bug == get_index():
 		print("shockwaved")
-		if timer.is_stopped():
-			_state = state.shockwaved
-		timer.start(1)
+		transform.origin.y += 3;
 
 func splatted(bug):
-	var index = get_index()
-	if bug == index:
+	if bug == get_index():
 		if timer.is_stopped():
 			print("splatted")
 			hp -= 1

@@ -16,6 +16,8 @@ enum state {wandering, shockwaved, splatted, dead}
 var _state : int = state.wandering
 var _lastState : int = _state
 
+var gravity = 600
+var speed = 500
 var impulse = 100
 var drag = 80
 var rotation_speed = 6
@@ -37,21 +39,22 @@ func _process(delta):
 			animplayer.play("Walk")
 		else:
 			animplayer.stop("Walk")
-	if _state == state.shockwaved:
-		update_rotation(delta)
-		update_position(delta)
-		transform.origin.y = shockwaveCurve.interpolate(1 - timer.time_left)
-		if timer.is_stopped():
-			_state = _lastState
 	if _state == state.splatted:
+		dir = Vector2.ZERO
+		add_velocity(delta)
+		update_position(delta)
 		pass
 	if _state == state.dead:
+		dir = Vector2.ZERO
+		add_velocity(delta)
+		update_position(delta)
 		pass
+	
 	
 func get_input():
 	if aitimer.is_stopped():
 		dir.x = rand_range(-.2,.2)
-		dir.y = rand_range(-1,-.5)
+		dir.y = rand_range(-1,-.8)
 		aitimer.start(2)
 
 func update_rotation(delta):
@@ -61,19 +64,12 @@ func update_rotation(delta):
 	pass
 
 func add_velocity(delta):
-	velocity += transform.basis.z * impulse * dir.y * delta
-	velocity = velocity.move_toward(Vector3.ZERO, drag * delta)
-	velocity.x = clamp(velocity.x, -maxSpeed, maxSpeed)
-	velocity.z = clamp(velocity.z, -maxSpeed, maxSpeed)
+	velocity = (transform.basis.z * speed * dir.y * delta) + (-transform.basis.y * gravity * delta)
 	pass
 	
 func update_position(delta):
 	move_and_slide(velocity)
 	transform = transform.orthonormalized()
-	pass
-	
-func raycast_from_head():
-	
 	pass
 
 func splatted(bug):
@@ -92,10 +88,7 @@ func shockwaved(bug):
 	var index = get_index()
 	if bug == index:
 		print("shockwaved")
-		if _state != state.shockwaved && _state != state.splatted && _state != state.dead:
-			_lastState = _state
-			_state = state.shockwaved
-			timer.start(1)
+		transform.origin.y += 3;
 
 func bug_death():
 	add_to_group("Dead")

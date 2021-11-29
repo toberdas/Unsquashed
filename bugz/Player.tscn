@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://bugz/playerMovement.gd" type="Script" id=1]
-[ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BugEyeEnvironment.tres" type="Environment" id=3]
 [ext_resource path="res://bugz/InsectMaterial.material" type="Material" id=4]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.473357, 0.297034, 1.32541 )
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.496424
+height = 1.88385
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Plane"
@@ -532,25 +532,20 @@ tracks/27/keys = PoolRealArray( 0, 1, 0, 0, 0, 8.88178e-16, 8.88178e-16, 1.52952
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48662, 1.34402 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48662, 1.35615 )
 shape = SubResource( 1 )
 
 [node name="SpringArm" type="SpringArm" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24197, -0.483989 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6278, -0.345879 )
 collision_mask = 2
 
 [node name="Camera" type="Camera" parent="SpringArm"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000675201, -0.540152, 0.234045 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000675201, -1.05154, -0.0634917 )
 environment = ExtResource( 3 )
 current = true
 
-[node name="motion_blur" parent="SpringArm/Camera" instance=ExtResource( 2 )]
-
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
-
-[node name="OverviewCamera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 19, 12 )
 
 [node name="SwitchTimer" type="Timer" parent="."]
 one_shot = true
@@ -710,25 +705,3 @@ material/0 = null
 playback_speed = 8.0
 anims/Hit = SubResource( 4 )
 anims/Walk = SubResource( 5 )
-
-[node name="RayCastUp" type="RayCast" parent="."]
-transform = Transform( 1.00249, 0, 0, 0, 0.203584, 0.981603, 0, -0.981603, 0.203584, 0, 0.740101, -0.0563444 )
-enabled = true
-cast_to = Vector3( 0, 0.5, 0 )
-
-[node name="RayCastForward" type="RayCast" parent="."]
-transform = Transform( 1.00249, 0, 0, 0, -0.0125623, 1.00241, 0, -1.00241, -0.0125623, 0, 0.740101, -0.0563444 )
-enabled = true
-cast_to = Vector3( 0, 0.5, 0 )
-
-[node name="RayCastDown" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0322167, -0.192932 )
-enabled = true
-
-[node name="RayCastDownback" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.450192, 0.892932, 0, -0.892932, 0.450192, 0, 0.0120955, -0.41141 )
-enabled = true
-
-[node name="RayCastDownback2" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.734251, 0.678878, 0, -0.678878, 0.734251, 0, 0.0120955, -0.41141 )
-enabled = true
