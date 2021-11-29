@@ -1,9 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://chasers/hand.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://doodads/Wall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://bugz/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://bugz/Bug.tscn" type="PackedScene" id=4]
+[ext_resource path="res://doodads/chairo.tscn" type="PackedScene" id=5]
+[ext_resource path="res://doodads/JANKYcontroller.tscn" type="PackedScene" id=6]
+[ext_resource path="res://doodads/table.tscn" type="PackedScene" id=7]
+[ext_resource path="res://doodads/hole.tscn" type="PackedScene" id=8]
+[ext_resource path="res://doodads/octogonaltable.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Curve3D" id=1]
 bake_interval = 10.0
@@ -14,14 +19,8 @@ _data = {
 
 [node name="Spatial" type="Spatial"]
 
-[node name="StaticBody" parent="." instance=ExtResource( 2 )]
-transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, 3.651, 2.80298, -2.44655 )
-
 [node name="Floor" parent="." instance=ExtResource( 2 )]
-transform = Transform( 72.5518, 0, 0, 0, 1, 0, 0, 0, 143.687, 0, -3.42185, 0 )
-
-[node name="StaticBody3" parent="." instance=ExtResource( 2 )]
-transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, -32.0002, 2.92847, -16.6956 )
+transform = Transform( 72.5518, 0, 0, 0, 1, 0, 0, 0, 113.878, 0, -3.42185, 0 )
 
 [node name="insect" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56856, 0.10881, -12.9109 )
@@ -43,18 +42,55 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 68.6
 shadow_enabled = true
 
 [node name="Path" type="Path" parent="."]
-transform = Transform( 1.74938, 0, 0, 0, 1.25418, 0, 0, 0, 1.94776, -16.5078, 32.1199, -9.56645 )
+transform = Transform( 1.74938, 0, 0, 0, 1.25418, 0, 0, 0, 1.94776, -9.00402, 26.547, 10.0056 )
 curve = SubResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.7873, 4.39042, 27.4646 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.0167, -1.54467, 64.0471 )
 
 [node name="hand" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.4853, 33.1191, -2.02633 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.1365, 33.6539, 4.72295 )
 patrol_path = NodePath("../Path")
 
 [node name="insect6" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.40956, 0.0127483, 4.01276 )
 
 [node name="Wall" parent="." instance=ExtResource( 2 )]
-transform = Transform( -5.07836, 0, 0, 0, 25.2802, 0, 0, 0, 140.448, -136.524, 6.26496, 0 )
+transform = Transform( -5.07836, 0, 0, 0, 25.2802, 0, 0, 0, 111.311, -76.4748, 6.26496, 0 )
+
+[node name="chairo" parent="." instance=ExtResource( 5 )]
+transform = Transform( -4.76384, 0.03161, -2.13843, 0.0143134, 5.62795, 0.0463391, 1.92169, 0.0364422, -5.3015, -39.1662, -2.39071, 56.1208 )
+
+[node name="chairo2" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1.8142, 0.037143, -5.34819, 0.0143134, 5.62795, 0.0463391, 4.80581, -0.0307835, 2.01882, 10.8287, -2.39071, 101.417 )
+
+[node name="table" parent="." instance=ExtResource( 7 )]
+transform = Transform( 7.24554, 0, 0, 0, 6.98742, 0, 0, 0, 7.59191, 0, -3.99794, 84.4548 )
+
+[node name="JANKYcontroller" parent="." instance=ExtResource( 6 )]
+transform = Transform( 2.28734, 0, 1.38096, 0, 3.62234, 0, -1.35455, 0, 2.48911, 0, -0.41774, 21.5068 )
+
+[node name="table2" parent="." instance=ExtResource( 7 )]
+transform = Transform( 2.13, 0, -7.25645, 0, 6.98742, 0, 6.92539, 0, 2.23182, -51.0671, -3.99794, -44.8575 )
+
+[node name="hole" parent="." instance=ExtResource( 8 )]
+transform = Transform( -0.0294414, 0, -1.90176, 0, 1, 0, 1.02538, 0, 0.312789, -71.636, -1.77584, -29.8323 )
+
+[node name="Wall2" parent="." instance=ExtResource( 2 )]
+transform = Transform( -5.07836, 0, 0, 0, 25.2802, 0, 0, 0, 111.311, 68.4641, 6.26496, 0 )
+
+[node name="Wall3" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.309799, 0, -94.4998, 0, 25.2802, 0, -5.07284, 0, 0.977153, 0.119659, 6.26496, -108.735 )
+
+[node name="Wall4" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.309799, 0, -94.4998, 0, 25.2802, 0, -5.07284, 0, 0.977153, 0.284592, 6.05958, 117.078 )
+
+[node name="octogonaltable" parent="." instance=ExtResource( 9 )]
+transform = Transform( 7.41868, 0, 0, 0, 9.21068, 0, 0, 0, 7.02728, 26.5226, -1.87696, -0.158801 )
+
+[node name="chairo3" parent="." instance=ExtResource( 5 )]
+transform = Transform( 2.38784, -0.0476824, 5.06131, 0.0143134, 5.62795, 0.0463391, -4.54811, -0.00732246, 2.65743, -16.2996, -2.39071, -75.009 )
+
+[node name="hand2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.021, 33.6539, 36.1536 )
+patrol_path = NodePath("../Path")
