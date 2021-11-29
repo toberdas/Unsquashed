@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://chasers/hand.tscn" type="PackedScene" id=1]
 [ext_resource path="res://doodads/Wall.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://doodads/table.tscn" type="PackedScene" id=7]
 [ext_resource path="res://doodads/hole.tscn" type="PackedScene" id=8]
 [ext_resource path="res://doodads/octogonaltable.tscn" type="PackedScene" id=9]
+[ext_resource path="res://doodads/stupidmorsel.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve3D" id=1]
 bake_interval = 10.0
@@ -94,3 +95,6 @@ transform = Transform( 2.38784, -0.0476824, 5.06131, 0.0143134, 5.62795, 0.04633
 [node name="hand2" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.021, 33.6539, 36.1536 )
 patrol_path = NodePath("../Path")
+
+[node name="stupidmorsel" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47.8042, -2.18189, 52.5639 )

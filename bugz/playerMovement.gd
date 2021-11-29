@@ -7,9 +7,9 @@ var inAir = 1;
 
 onready var timer = $Timer
 onready var switchtimer = $SwitchTimer
-onready var overviewcam = $OverviewCamera
-onready var cam = $SpringArm/Camera
-
+onready var cam = $Camera
+onready var pickupArea = $AreaPickup
+onready var joint = $PinJoint
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
@@ -25,9 +25,11 @@ var maxSpeed = 600
 var hp = 30
 var switchdelay = 1
 var acceleration = 10
+var carrying = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pickupArea.connect("body_entered", self, "pickup")
 	pass # Replace with function body.
 
 
@@ -77,3 +79,10 @@ func splatted(bug):
 			if hp == 0:
 				add_to_group("Dead")
 
+func pickup(body):
+	if !carrying:
+		if body.is_in_group("Food"):
+			get_tree().call_group("Food", "pickedup", body.get_index())
+			joint.set_node_a(get_path())
+			joint.set_node_b(body.get_path())
+			pass
