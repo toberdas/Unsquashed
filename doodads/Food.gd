@@ -15,3 +15,7 @@ func pickedup(index):
 	if index == get_index():
 
 		pass
+
+func destroy(index):
+	if index == get_index():
+		queue_free()

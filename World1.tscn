@@ -19,6 +19,7 @@ _data = {
 }
 
 [node name="Spatial" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.569401, 0 )
 
 [node name="Floor" parent="." instance=ExtResource( 2 )]
 transform = Transform( 72.5518, 0, 0, 0, 1, 0, 0, 0, 113.878, 0, -3.42185, 0 )
@@ -74,9 +75,6 @@ transform = Transform( 2.28734, 0, 1.38096, 0, 3.62234, 0, -1.35455, 0, 2.48911,
 [node name="table2" parent="." instance=ExtResource( 7 )]
 transform = Transform( 2.13, 0, -7.25645, 0, 6.98742, 0, 6.92539, 0, 2.23182, -51.0671, -3.99794, -44.8575 )
 
-[node name="hole" parent="." instance=ExtResource( 8 )]
-transform = Transform( -0.0294414, 0, -1.90176, 0, 1, 0, 1.02538, 0, 0.312789, -71.636, -1.77584, -29.8323 )
-
 [node name="Wall2" parent="." instance=ExtResource( 2 )]
 transform = Transform( -5.07836, 0, 0, 0, 25.2802, 0, 0, 0, 111.311, 68.4641, 6.26496, 0 )
 
@@ -97,4 +95,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.021, 33.6539, 36.1536 )
 patrol_path = NodePath("../Path")
 
 [node name="stupidmorsel" parent="." instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47.8042, -2.18189, 52.5639 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47.8042, -0.533607, 52.5639 )
+
+[node name="hole" parent="." instance=ExtResource( 8 )]
+transform = Transform( -0.0244845, 0, 0.9997, 0, 0.509476, 0, -0.538036, 0, -0.0131775, -70.6107, -2.28807, 57.9516 )
+
+[node name="stupidmorsel2" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54.7283, 2.09526, 50.4592 )

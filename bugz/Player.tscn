@@ -535,9 +535,11 @@ extents = Vector3( 0.268768, 0.217972, 0.288756 )
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.945853, 0.324594, 0, -0.324594, 0.945853, 0.000675201, 0.637011, 0.0246938 )
+transform = Transform( 1, 0, 0, 0, 0.994951, 0.100362, 0, -0.100362, 0.994951, 0.000675201, 0.637011, 0.00110157 )
 environment = ExtResource( 3 )
 current = true
+fov = 43.1618
+far = 254.2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48662, 0.669176 )
@@ -706,10 +708,19 @@ anims/Hit = SubResource( 4 )
 anims/Walk = SubResource( 5 )
 
 [node name="AreaPickup" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.047316, 0.289972, -0.533009 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.047316, 0.38894, -0.477721 )
 
 [node name="CollisionShape" type="CollisionShape" parent="AreaPickup"]
 shape = SubResource( 6 )
 
-[node name="PinJoint" type="PinJoint" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.495403, -0.17251 )
+[node name="Generic6DOFJoint" type="Generic6DOFJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.924792, -0.380473, 0, 0.380473, 0.924792, 0, 0.555275, -0.589173 )
+linear_limit_x/softness = 0.01
+linear_limit_x/restitution = 0.01
+linear_limit_x/damping = 0.01
+linear_limit_y/softness = 0.01
+linear_limit_y/restitution = 0.01
+linear_limit_y/damping = 0.01
+linear_limit_z/softness = 0.01
+linear_limit_z/restitution = 0.01
+linear_limit_z/damping = 0.01

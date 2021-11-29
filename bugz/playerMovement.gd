@@ -9,7 +9,7 @@ onready var timer = $Timer
 onready var switchtimer = $SwitchTimer
 onready var cam = $Camera
 onready var pickupArea = $AreaPickup
-onready var joint = $PinJoint
+onready var joint = $Generic6DOFJoint
 
 var shockwaveCurve = preload("res://shockwave_curve.tres")
 
