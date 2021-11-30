@@ -15,7 +15,7 @@ onready var audioplayer = $AudioStreamPlayer3D
 
 export var playerControlled : bool
 
-var shockwaveCurve = preload("res://shockwave_curve.tres")
+var shockwaveCurve = preload("res://assets/shockwave_curve.tres")
 
 enum state {normal, dead}
 var _state : int = state.normal

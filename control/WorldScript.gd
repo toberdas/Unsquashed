@@ -31,5 +31,5 @@ func tally_food():
 func _process(delta):
 	if get_tree().get_nodes_in_group("Bugs").size() == 0:
 		print("GAME OVER")
-		get_tree().change_scene("res://doodads/gameOVER.tscn")
+		get_tree().change_scene("res://control/gameOVER.tscn")
 	pass

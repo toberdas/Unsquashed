@@ -10,4 +10,4 @@ func _ready():
 
 func _process(delta):
 	if Input.is_action_pressed("reset"):
-		get_tree().change_scene("res://World1.tscn")
+		get_tree().change_scene("res://control/World1.tscn")

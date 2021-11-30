@@ -4,7 +4,7 @@ export (NodePath) var patrol_path
 var patrol_points
 var patrol_index = 0
 
-var curve = preload("res://stomp_curve.tres")
+var curve = preload("res://assets/stomp_curve.tres")
 
 onready var scanArea = $AreaScan
 onready var shockwaveArea = $AreaShock
