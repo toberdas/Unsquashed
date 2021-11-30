@@ -8,11 +8,14 @@ var bug = preload("res://bugz/Bug.tscn")
 var foodtally = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var newbug = bug.instance()
-	newbug.playerControlled = true
-	spawnpathfollow.unit_offset = randf()
-	newbug.transform.origin = spawnpathfollow.global_transform.origin
-	get_tree().get_current_scene().add_child(newbug)
+	randomize()
+	for i in range(5):
+		var newbug = bug.instance()
+		if i == 0:
+			newbug.playerControlled = true
+		spawnpathfollow.unit_offset = randf()
+		newbug.transform.origin = spawnpathfollow.global_transform.origin
+		get_tree().get_current_scene().add_child(newbug)
 	pass 
 
 func tally_food():
