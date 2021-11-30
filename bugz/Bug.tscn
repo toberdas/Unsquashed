@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://bugz/InsectMaterial.material" type="Material" id=1]
-[ext_resource path="res://bugz/bugMovement.gd" type="Script" id=2]
+[ext_resource path="res://bugz/playerMovement.gd" type="Script" id=1]
+[ext_resource path="res://doodads/pickup.wav" type="AudioStream" id=2]
+[ext_resource path="res://BugEyeEnvironment.tres" type="Environment" id=3]
+[ext_resource path="res://bugz/InsectMaterial.material" type="Material" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.589283
-height = 1.84354
+radius = 0.494052
+height = 0.997198
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Plane"
@@ -16,7 +18,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97751,
 "index_count": 3234,
-"material": ExtResource( 1 ),
+"material": ExtResource( 4 ),
 "primitive": 4,
 "skeleton_aabb": [ AABB( -0.309555, 0.284033, 0.307853, 0.618229, 0.54434, 0.951242 ), AABB( -0.308108, 0.284033, 0.267301, 0.617869, 0.385991, 0.51901 ), AABB( -0.362078, 0.323403, -0.660079, 0.72075, 0.396828, 1.15392 ), AABB( -0.360809, 0.337615, -1.35963, 0.71905, 0.643229, 1.33171 ), AABB( -0.290608, 0.313561, -1.63719, 0.580218, 0.667283, 1.05769 ), AABB( -0.229744, 0.313561, -1.68925, 0.560182, 0.667282, 0.716754 ), AABB( 0.113679, 0.313561, -1.78158, 0.216759, 0.512021, 0.657488 ), AABB( -0.331309, 0.313561, -1.68925, 0.560182, 0.667282, 0.716754 ), AABB( -0.331309, 0.313561, -1.78158, 0.216749, 0.667282, 0.657488 ), AABB( -0.0900511, 0.340306, -1.13024, 0.781631, 0.481417, 0.945764 ), AABB( 0.579989, 0.389347, -1.13505, 0.427693, 0.135253, 0.453107 ), AABB( 0.900357, 0.39042, -1.42533, 0.258041, 0.106024, 0.502271 ), AABB( -0.692461, 0.340306, -0.807294, 0.692021, 0.379925, 0.622817 ), AABB( -1.00856, 0.389347, -1.13505, 0.426656, 0.134891, 0.451052 ), AABB( -1.15928, 0.39042, -1.42533, 0.258042, 0.106023, 0.502271 ), AABB( -0.00584453, 0.33414, -0.460048, 0.71682, 0.325448, 0.727359 ), AABB( 0.548803, 0.391265, -0.0991648, 0.516006, 0.105344, 0.345135 ), AABB( 0.977276, 0.404317, 0.168122, 0.21054, 0.0757996, 0.456465 ), AABB( -0.711374, 0.323514, -0.460048, 0.716717, 0.320038, 0.767922 ), AABB( -1.07064, 0.391265, -0.0991648, 0.520958, 0.105344, 0.348269 ), AABB( -1.1887, 0.404317, 0.168122, 0.21054, 0.0757996, 0.456465 ), AABB( -0.00699324, 0.304653, 0.0407742, 0.752765, 0.365371, 0.697667 ), AABB( 0.544997, 0.361862, 0.530828, 0.276274, 0.138468, 0.582561 ), AABB( 0.716008, 0.390619, 1.0074, 0.153773, 0.105316, 0.43959 ), AABB( -0.746653, 0.304653, 0.407928, 0.649637, 0.192286, 0.330513 ), AABB( -0.822151, 0.361862, 0.530828, 0.276274, 0.138468, 0.582561 ), AABB( -0.870662, 0.390619, 1.00749, 0.153773, 0.105316, 0.439496 ), AABB( -0.309555, 0.284033, 0.78631, 0.618239, 0.562387, 0.767519 ) ],
 "vertex_count": 1194
@@ -109,6 +111,10 @@ bind/26/pose = Transform( -1.81168, -1.7691e-07, 0.0441874, 0.0441875, -1.38007e
 bind/27/name = "abdomen.001"
 bind/27/bone = -1
 bind/27/pose = Transform( 1.81222, 0, 0, 0, 7.92147e-08, 1.81222, 0, -1.81222, 1.2347e-07, 0.000798293, -1.68728, 0.803316 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.137255, 0.0901961, 0.0901961, 1 )
+metallic = 0.34
 
 [sub_resource type="Animation" id=4]
 resource_name = "Hit"
@@ -525,26 +531,35 @@ tracks/27/imported = true
 tracks/27/enabled = true
 tracks/27/keys = PoolRealArray( 0, 1, 0, 0, 0, 8.88178e-16, 8.88178e-16, 1.52952e-16, 1, 1, 1, 1, 0.0666667, 1, 0, 0, 0, -8.03436e-12, 1.82173e-12, 0.000432208, 1, 1, 1, 1, 0.133333, 1, 0, 0, 0, -6.56852e-11, 1.49396e-11, 0.00353756, 0.999994, 1, 1, 1, 0.2, 1, 0, 0, 0, -1.8766e-10, 4.29205e-11, 0.0101297, 0.999949, 1, 1, 1, 0.266667, 1, 0, 0, 0, -3.68939e-10, 8.51006e-11, 0.0199872, 0.9998, 1, 1, 1, 0.333333, 1, 0, 0, 0, -6.00778e-10, 1.3998e-10, 0.0326879, 0.999466, 1, 1, 1, 0.866667, 1, 0, 0, 0, -3.76184e-09, 1.01723e-09, 0.218816, 0.975766, 1, 1, 1, 1.26667, 1, 0, 0, 0, -6.35504e-09, 1.98026e-09, 0.395956, 0.91827, 1, 1, 1, 1.8, 1, 0, 0, 0, -8.30697e-09, 2.99891e-09, 0.558803, 0.8293, 1, 1, 1, 1.86667, 1, 0, 0, 0, -8.41264e-09, 3.06884e-09, 0.569104, 0.822265, 1, 1, 1, 1.93333, 1, 0, 0, 0, -8.48977e-09, 3.12147e-09, 0.576783, 0.816898, 1, 1, 1, 2, 1, 0, 0, 0, -8.54083e-09, 3.15709e-09, 0.581944, 0.813229, 1, 1, 1, 2.06667, 1, 0, 0, 0, -3.46527e-09, -1.38081e-08, 0.58402, 0.811739, 1, 1, 1, 2.13333, 1, 0, 0, 0, -5.85339e-11, -2.51425e-08, 0.583361, 0.812213, 1, 1, 1, 2.2, 1, 0, 0, 0, -1.24607e-11, -2.52056e-08, 0.579862, 0.814715, 1, 1, 1, 2.26667, 1, 0, 0, 0, 6.92478e-11, -2.53153e-08, 0.573678, 0.819081, 1, 1, 1, 2.33333, 1, 0, 0, 0, 1.82874e-10, -2.54635e-08, 0.565112, 0.825014, 1, 1, 1, 2.46667, 1, 0, 0, 0, 5.13538e-10, -2.58668e-08, 0.540458, 0.841371, 1, 1, 1, 2.93333, 1, 0, 0, 0, 2.62588e-09, -2.76796e-08, 0.389163, 0.921169, 1, 1, 1, 3.33333, 1, 0, 0, 0, 5.18008e-09, -2.86019e-08, 0.215111, 0.97659, 1, 1, 1, 3.86667, 1, 0, 0, 0, 7.96828e-09, -2.84449e-08, 0.0332741, 0.999446, 1, 1, 1, 3.93333, 1, 0, 0, 0, 8.16745e-09, -2.83937e-08, 0.0206113, 0.999788, 1, 1, 1, 4, 1, 0, 0, 0, 8.3245e-09, -2.83499e-08, 0.0106553, 0.999943, 1, 1, 1, 4.06667, 1, 0, 0, 0, 8.42875e-09, -2.83191e-08, 0.00406699, 0.999992, 1, 1, 1, 4.13333, 1, 0, 0, 0, 6.78579e-09, -2.26423e-08, 0.000553653, 1, 1, 1, 1, 4.16667, 1, 0, 0, 0, 8.88178e-16, 8.88178e-16, 1.52952e-16, 1, 1, 1, 1 )
 
-[node name="insect" type="KinematicBody" groups=[
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 0.435226, 0.207866, 0.306945 )
+
+[node name="KinematicBody" type="KinematicBody" groups=[
 "Bugs",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0348972, 0 )
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.974557, 0, 0, 0, 0.974557, 0, 0, 0, 0.974557, 0, 0.493252, -0.0210293 )
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.978158, 0.207861, 0, -0.207861, 0.978158, 0.000675201, 1.77141, 3.87788 )
+environment = ExtResource( 3 )
+fov = 45.0
+far = 254.2
+
+[node name="CollisionShape" type="CollisionShape" parent="." groups=[
+"Bugs",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.445707, 0.0269238 )
 shape = SubResource( 1 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="DecayTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="AITimer" type="Timer" parent="."]
-wait_time = 0.001
+[node name="SwitchTimer" type="Timer" parent="."]
 one_shot = true
 autostart = true
 
 [node name="Armature" type="Spatial" parent="."]
-transform = Transform( 0.551809, 0, 0, 0, 0, 0.551809, 0, -0.551809, 0, -0.000440506, 0.443277, 1.2608 )
+transform = Transform( 0.447214, 0, 0, 0, 0, 0.472847, 0, -0.411645, 0, -0.000440506, 0.443277, 1.01583 )
 
 [node name="Skeleton" type="Skeleton" parent="Armature"]
 bones/0/name = "abdomen"
@@ -689,11 +704,35 @@ bones/27/enabled = true
 bones/27/bound_children = [  ]
 
 [node name="Plane" type="MeshInstance" parent="Armature/Skeleton"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0111041, 0.012671, -0.013166 )
 mesh = SubResource( 2 )
 skin = SubResource( 3 )
-material/0 = null
+material/0 = SubResource( 7 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-playback_speed = 8.0
+playback_default_blend_time = 1.0
+playback_speed = 26.0
 anims/Hit = SubResource( 4 )
 anims/Walk = SubResource( 5 )
+
+[node name="AreaPickup" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.199753, -1.45155 )
+
+[node name="CollisionShape" type="CollisionShape" parent="AreaPickup"]
+shape = SubResource( 6 )
+
+[node name="Generic6DOFJoint" type="Generic6DOFJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.199753, -1.45155 )
+linear_limit_x/softness = 0.01
+linear_limit_x/restitution = 0.01
+linear_limit_x/damping = 0.01
+linear_limit_y/softness = 0.01
+linear_limit_y/restitution = 0.01
+linear_limit_y/damping = 0.01
+linear_limit_z/softness = 0.01
+linear_limit_z/restitution = 0.01
+linear_limit_z/damping = 0.01
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 2 )
+unit_db = 10.0

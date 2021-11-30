@@ -13,9 +13,9 @@ onready var areaHit = $AreaHit
 onready var areaDown = $AreaDown
 onready var animplayer = $AnimationPlayer
 onready var waitTimer = $WaitTimer
+onready var audioplayer = $AudioStreamPlayer3D
 
-
-var speed = 1200
+var speed = 1000
 var stompDistance = 3
 
 enum state {idle, patrol, chasing, waiting, stomping}
@@ -48,13 +48,17 @@ func _process(delta):
 	if _state == state.idle:
 		pass
 	if _state == state.patrol:
+		speed = 1000
 		patrol()
 		animplayer.play("Idle")
 		raycasting()
 	if _state == state.chasing:
+		speed = 2000
+		
 		raycasting()
 		animplayer.play("Chase")
 	if _state == state.stomping:
+		speed = 1000
 		waitTimer.set_paused(true)
 		animplayer.play("Splat")
 
@@ -80,16 +84,22 @@ func raycast(from, to):
 	return raycol
 
 func raycast_bug(bug):
+	if !is_instance_valid(bug):
+		return
 	var raycol = raycast(transform.origin, bug.transform.origin)
 	if raycol:
 		if raycol.collider.is_in_group("Bugs") && !raycol.collider.is_in_group("Dead"):
 			return true
 
 func raycasting():
-	for bug in bugList:
-		if raycast_bug(bug):
-				moveTarget.x = bug.transform.origin.x
-				moveTarget.z = bug.transform.origin.z
+	for bug in bugList.size():
+		var ind = bugList[bug]
+		if !is_instance_valid(ind):
+			bugList.remove(bug)
+			return
+		if raycast_bug(ind):
+				moveTarget.x = ind.transform.origin.x
+				moveTarget.z = ind.transform.origin.z
 				_state = state.chasing
 				return
 
@@ -104,13 +114,15 @@ func bug_left(body):
 		if bugList.has(body):
 			bugList.erase(body)
 
-func bug_splatted(bug):
-	shockwaveCollider.set_disabled(true)
-	hand_up()
-	get_tree().call_group("Bugs", "splatted", bug.get_index())
+func bug_splatted(body):
+	if body.is_in_group("Walls"):
+		audioplayer.play(0)
+		shockwaveCollider.set_disabled(true)
+		hand_up()
+	get_tree().call_group("Bugs", "splatted", body)
 
 func bug_shockwaved(body):
-	get_tree().call_group("Bugs", "shockwaved", body.get_index())
+	get_tree().call_group("Bugs", "shockwaved", body)
 
 func go_stomp(body):
 	if body.is_in_group("Bugs") && !body.is_in_group("Dead"):
@@ -125,7 +137,6 @@ func hand_up():
 func hand_down():
 	waitTimer.set_paused(true)
 	shockwaveCollider.set_disabled(false)
-	print("Stomp!")
 	moveTarget.y = 0
 	stomping = true
 	

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/pickup.wav-4e3e9661848e38923e90b803f46ee72a.sample"
+
+[deps]
+
+source_file="res://doodads/pickup.wav"
+dest_files=[ "res://.import/pickup.wav-4e3e9661848e38923e90b803f46ee72a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
