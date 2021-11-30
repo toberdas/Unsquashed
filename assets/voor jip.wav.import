@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/voor jip.wav-dd1ffa3839ed1b79983eb9e541fc3091.sample"
+
+[deps]
+
+source_file="res://assets/voor jip.wav"
+dest_files=[ "res://.import/voor jip.wav-dd1ffa3839ed1b79983eb9e541fc3091.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

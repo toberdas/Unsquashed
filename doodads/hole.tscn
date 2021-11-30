@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://holemat.material" type="Material" id=1]
+[ext_resource path="res://assets/holemat.material" type="Material" id=1]
 [ext_resource path="res://doodads/Hole.gd" type="Script" id=2]
-[ext_resource path="res://doodads/food_get.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/food_get.wav" type="AudioStream" id=3]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Cylinder"
